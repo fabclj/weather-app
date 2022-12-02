@@ -13,11 +13,9 @@
     "axios": "^1.2.0",
     "date-fns": "^2.29.3",
     "debounce-promise": "^3.1.2",
-    "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
-    "react-search-autocomplete": "^8.2.1",
     "react-select": "^5.6.1",
     "swiper": "^8.4.5",
     "typescript": "^4.9.3",
@@ -48,7 +46,6 @@
     ]
   },
   "devDependencies": {
-    "@types/debounce-promise": "^3.1.5",
-    "@types/lodash": "^4.14.190"
+    "@types/debounce-promise": "^3.1.5"
   }
 }
