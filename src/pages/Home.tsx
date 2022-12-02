@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import Header from '../components/header/Header';
 import Search from '../components/search/Search';
 import CurrentWeather from '../components/currentWeather/CurrentWeather';

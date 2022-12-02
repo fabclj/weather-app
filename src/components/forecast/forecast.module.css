@@ -64,3 +64,9 @@
 	width: 5rem;
 	text-align: center;
 }
+
+@media (max-width: 800px) {
+	.slides:after {
+		width: 70px;
+	}
+}

@@ -1,6 +1,6 @@
-import React, { FC, useContext } from 'react';
+import { FC, useContext } from 'react';
 import { AppContext } from '../../common/appContext';
-import { AppContextType, IWeatherResponse } from '../../common/types';
+import { AppContextType } from '../../common/types';
 import WeatherIcon from '../WeatherIcon';
 import { format, isToday } from 'date-fns';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -18,12 +18,7 @@ const Forecast: FC = () => {
         <span>Forecast</span>
       </div>
       <div className={styles.slides}>
-        <Swiper
-          slidesPerView={'auto'}
-          spaceBetween={0}
-          className="mySwiper"
-          onSlideChange={() => console.log('slide change')}
-        >
+        <Swiper slidesPerView={'auto'} spaceBetween={0}>
           {forecast.list.map((item: any, i: number) => {
             const date = new Date(item.dt * 1000);
             const day = isToday(date) ? 'Today' : format(date, 'EEEE');

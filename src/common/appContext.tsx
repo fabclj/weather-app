@@ -1,19 +1,27 @@
-import React, { FC, useState, createContext } from 'react';
-import { AppContextType, IWeatherResponse, IProviderProps } from './types';
+import { FC, useState, createContext } from 'react';
+import {
+  AppContextType,
+  IWeatherResponse,
+  IForecastResponse,
+  IProviderProps,
+  ICity,
+} from './types';
 
 export const AppContext = createContext<AppContextType | null>(null);
 
 const AppProvider: FC<IProviderProps> = ({ children }) => {
-  const [currentWeather, setCurrentWeather] = useState<any>(null);
-  const [forecast, setForecast] = useState<any>(null);
-  const [currentCity, saveCurrentCity] = useState<any>(null);
+  const [currentWeather, setCurrentWeather] = useState<IWeatherResponse | null>(
+    null
+  );
+  const [forecast, setForecast] = useState<IForecastResponse | null>(null);
+  const [currentCity, saveCurrentCity] = useState<ICity | null>(null);
   const [fetchingWeather, setFetchingWeather] = useState<boolean>(false);
 
-  const saveCurrentWeather = (weather: any) => {
+  const saveCurrentWeather = (weather: IWeatherResponse) => {
     setCurrentWeather(weather);
   };
 
-  const saveForecast = (forecast: any) => {
+  const saveForecast = (forecast: IForecastResponse) => {
     setForecast(forecast);
   };
 

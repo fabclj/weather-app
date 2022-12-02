@@ -115,3 +115,21 @@
 	font-weight: 500;
 	font-size: 1rem;
 }
+
+@media (max-width: 800px) {
+	.info {
+		margin: 2rem 0rem;
+	}
+
+	.info span {
+		font-size: 6rem;
+	}
+
+	.details {
+		margin-left: 0rem;
+	}
+
+	.cityBox {
+		justify-content: flex-start;
+	}
+}

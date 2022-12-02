@@ -1,4 +1,4 @@
-import React, { FC, useContext, useRef } from 'react';
+import { FC, useContext, useRef } from 'react';
 import AsyncSelect from 'react-select/async';
 import { SelectInstance } from 'react-select';
 import debounce from 'debounce-promise';
@@ -6,7 +6,7 @@ import styles from './search.module.css';
 import { ReactComponent as LocationIcon } from '../../common/assets/icons/location-icon.svg';
 import { ReactComponent as SearchIcon } from '../../common/assets/icons/search-icon.svg';
 import { AppContext } from '../../common/appContext';
-import { AppContextType, IWeatherResponse } from '../../common/types';
+import { AppContextType, ICity, ISelect } from '../../common/types';
 import { geo_api, weather_api } from '../../common/api';
 
 const Search: FC = () => {
@@ -18,11 +18,31 @@ const Search: FC = () => {
     setFetchingWeather,
   } = useContext(AppContext) as AppContextType;
 
-  const handleCitySelect = (searchData: any) => {
-    if (!searchData) return null;
-    saveCurrentCity(searchData.data);
+  const handleCitySelect = (searchData: any): void => {
+    console.log(searchData);
+    if (searchData) {
+      saveCurrentCity(searchData.data);
+      fetchWeather(searchData.data.latitude, searchData.data.longitude);
+    }
+  };
 
-    fetchWeather(searchData.data.latitude, searchData.data.longitude);
+  const handleGeoLocation = () => {
+    if (navigator.geolocation) {
+      setFetchingWeather(true);
+      navigator.geolocation.getCurrentPosition(
+        (position: GeolocationPosition) => {
+          saveCurrentCity(null);
+          refSel?.current?.clearValue();
+          return fetchWeather(
+            position.coords.latitude,
+            position.coords.longitude
+          );
+        }
+      );
+    } else {
+      setFetchingWeather(false);
+      alert('Geolocation is not supported by your browser.');
+    }
   };
 
   const fetchWeather = async (latitude: number, longitude: number) => {
@@ -53,38 +73,9 @@ const Search: FC = () => {
     setFetchingWeather(false);
   };
 
-  const handleGeoLocation = () => {
-    if (navigator.geolocation) {
-      setFetchingWeather(true);
-      navigator.geolocation.getCurrentPosition((position) => {
-        console.log(position);
-        saveCurrentCity(null);
-        refSel?.current?.clearValue();
-        return fetchWeather(
-          position.coords.latitude,
-          position.coords.longitude
-        );
-      });
-    } else {
-      setFetchingWeather(false);
-      alert('Geolocation is not supported by this browser.');
-    }
-  };
-
-  const mapCity = (data: any) => {
-    const cities = data.map((city: any) => {
-      return {
-        value: city.id,
-        label: `${city.name}, ${city.country}`,
-        data: city,
-      };
-    });
-    return cities;
-  };
-
   const fetchCities = debounce(
     (inputValue: string) =>
-      new Promise<any>((resolve) => {
+      new Promise<ISelect[]>((resolve) => {
         if (inputValue === '') {
           resolve([]);
         } else {
@@ -106,6 +97,17 @@ const Search: FC = () => {
     1000
   );
 
+  const mapCity = (data: ICity[]): ISelect[] => {
+    const cities = data.map((city: ICity) => {
+      return {
+        value: city.id,
+        label: `${city.name}, ${city.country}`,
+        data: city,
+      };
+    });
+    return cities;
+  };
+
   return (
     <div className={styles.wrapper}>
       <AsyncSelect
@@ -114,6 +116,10 @@ const Search: FC = () => {
         isClearable
         loadOptions={fetchCities}
         onChange={handleCitySelect}
+        placeholder="Search City..."
+        noOptionsMessage={(string) => {
+          return 'Please type the a valid city name';
+        }}
         styles={{
           control: (baseStyles, state) => ({
             ...baseStyles,
@@ -122,6 +128,22 @@ const Search: FC = () => {
             boxShadow: '0px 1px 3px rgba(0, 0, 0, 0.1)',
             border: 'none',
             padding: '0px 30px 0px 46px',
+          }),
+          placeholder: (baseStyles, state) => ({
+            ...baseStyles,
+            color: '#7b98b2',
+          }),
+          input: (baseStyles, state) => ({
+            ...baseStyles,
+            color: '#396bae',
+          }),
+          singleValue: (baseStyles, state) => ({
+            ...baseStyles,
+            color: '#396bae',
+          }),
+          menu: (baseStyles, state) => ({
+            ...baseStyles,
+            color: '#396bae',
           }),
           dropdownIndicator: (baseStyles, state) => ({
             visibility: 'hidden',
