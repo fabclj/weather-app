@@ -1,5 +1,6 @@
-import React, { FC, useContext } from 'react';
+import React, { FC, useContext, useRef } from 'react';
 import AsyncSelect from 'react-select/async';
+import { SelectInstance } from 'react-select';
 import debounce from 'debounce-promise';
 import styles from './search.module.css';
 import { ReactComponent as LocationIcon } from '../../common/assets/icons/location-icon.svg';
@@ -9,19 +10,28 @@ import { AppContextType, IWeatherResponse } from '../../common/types';
 import { geo_api, weather_api } from '../../common/api';
 
 const Search: FC = () => {
-  const { saveCurrentCity, saveCurrentWeather, saveForecast } = useContext(
-    AppContext
-  ) as AppContextType;
+  const refSel = useRef<SelectInstance>(null);
+  const {
+    saveCurrentCity,
+    saveCurrentWeather,
+    saveForecast,
+    setFetchingWeather,
+  } = useContext(AppContext) as AppContextType;
 
-  const handleCitySelect = async (searchData: any) => {
-    console.log(searchData);
+  const handleCitySelect = (searchData: any) => {
+    if (!searchData) return null;
     saveCurrentCity(searchData.data);
 
+    fetchWeather(searchData.data.latitude, searchData.data.longitude);
+  };
+
+  const fetchWeather = async (latitude: number, longitude: number) => {
+    setFetchingWeather(true);
     await weather_api
       .get('/weather', {
         params: {
-          lat: searchData.data.latitude,
-          lon: searchData.data.longitude,
+          lat: latitude,
+          lon: longitude,
           units: 'metric',
         },
       })
@@ -32,14 +42,33 @@ const Search: FC = () => {
     await weather_api
       .get('/forecast', {
         params: {
-          lat: searchData.data.latitude,
-          lon: searchData.data.longitude,
+          lat: latitude,
+          lon: longitude,
           units: 'metric',
         },
       })
       .then(function (response) {
         saveForecast(response.data);
       });
+    setFetchingWeather(false);
+  };
+
+  const handleGeoLocation = () => {
+    if (navigator.geolocation) {
+      setFetchingWeather(true);
+      navigator.geolocation.getCurrentPosition((position) => {
+        console.log(position);
+        saveCurrentCity(null);
+        refSel?.current?.clearValue();
+        return fetchWeather(
+          position.coords.latitude,
+          position.coords.longitude
+        );
+      });
+    } else {
+      setFetchingWeather(false);
+      alert('Geolocation is not supported by this browser.');
+    }
   };
 
   const mapCity = (data: any) => {
@@ -80,6 +109,7 @@ const Search: FC = () => {
   return (
     <div className={styles.wrapper}>
       <AsyncSelect
+        ref={refSel}
         defaultOptions
         isClearable
         loadOptions={fetchCities}
@@ -98,7 +128,7 @@ const Search: FC = () => {
           }),
         }}
       />
-      <div className={styles.localize}>
+      <div className={styles.localize} onClick={handleGeoLocation}>
         <LocationIcon />
       </div>
       <div className={styles.search}>

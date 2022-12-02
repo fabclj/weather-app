@@ -18,6 +18,7 @@
 .slides {
 	position: relative;
 	margin: 30px -30px 20px -30px;
+	cursor: grab;
 }
 
 .slides:after {

@@ -26,9 +26,11 @@ export interface AppContextType {
   currentCity: any;
   currentWeather: any;
   forecast: any;
+  fetchingWeather: boolean;
   saveForecast: (data: any) => void;
   saveCurrentWeather: (data: any) => void;
   saveCurrentCity: (data: any) => void;
+  setFetchingWeather: (data: boolean) => void;
 }
 
 export interface IWeatherIconProps {

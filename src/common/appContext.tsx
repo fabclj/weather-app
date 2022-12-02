@@ -7,6 +7,7 @@ const AppProvider: FC<IProviderProps> = ({ children }) => {
   const [currentWeather, setCurrentWeather] = useState<any>(null);
   const [forecast, setForecast] = useState<any>(null);
   const [currentCity, saveCurrentCity] = useState<any>(null);
+  const [fetchingWeather, setFetchingWeather] = useState<boolean>(false);
 
   const saveCurrentWeather = (weather: any) => {
     setCurrentWeather(weather);
@@ -25,6 +26,8 @@ const AppProvider: FC<IProviderProps> = ({ children }) => {
         saveCurrentWeather,
         forecast,
         saveForecast,
+        fetchingWeather,
+        setFetchingWeather,
       }}
     >
       {children}

@@ -23,15 +23,14 @@ const Forecast: FC = () => {
           spaceBetween={0}
           className="mySwiper"
           onSlideChange={() => console.log('slide change')}
-          onSwiper={(swiper) => console.log(swiper)}
         >
           {forecast.list.map((item: any, i: number) => {
             const date = new Date(item.dt * 1000);
             const day = isToday(date) ? 'Today' : format(date, 'EEEE');
             const time = format(date, 'p');
             return (
-              <SwiperSlide style={{ width: '135px' }}>
-                <div key={i} className={styles.slide}>
+              <SwiperSlide style={{ width: '135px' }} key={i}>
+                <div className={styles.slide}>
                   <div className={styles.date}>
                     {day}
                     <br />

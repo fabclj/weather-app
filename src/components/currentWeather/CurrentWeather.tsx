@@ -19,7 +19,7 @@ const CurrentWeather: FC = () => {
       </div>
       <div className={styles.cityBox}>
         <div className={styles.info}>
-          <h2>{currentCity.name}</h2>
+          <h2>{currentCity?.name || currentWeather.name}</h2>
           <div className={styles.temp}>
             <WeatherIcon
               big
