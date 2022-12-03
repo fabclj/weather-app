@@ -18,8 +18,8 @@ const Forecast: FC = () => {
         <span>Forecast</span>
       </div>
       <div className={styles.slides}>
-        <Swiper slidesPerView={'auto'} spaceBetween={0}>
-          {forecast.list.map((item: any, i: number) => {
+        <Swiper slidesPerView="auto" spaceBetween={0} freeMode>
+          {forecast.map((item: any, i: number) => {
             const date = new Date(item.dt * 1000);
             const day = isToday(date) ? 'Today' : format(date, 'EEEE');
             const time = format(date, 'p');

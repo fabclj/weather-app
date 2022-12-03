@@ -10,30 +10,22 @@ import {
 export const AppContext = createContext<AppContextType | null>(null);
 
 const AppProvider: FC<IProviderProps> = ({ children }) => {
+  const [forecast, setForecast] = useState<IForecastResponse[] | null>(null);
+  const [currentCity, setCurrentCity] = useState<ICity | null>(null);
+  const [fetchingWeather, setFetchingWeather] = useState<boolean>(false);
   const [currentWeather, setCurrentWeather] = useState<IWeatherResponse | null>(
     null
   );
-  const [forecast, setForecast] = useState<IForecastResponse | null>(null);
-  const [currentCity, saveCurrentCity] = useState<ICity | null>(null);
-  const [fetchingWeather, setFetchingWeather] = useState<boolean>(false);
-
-  const saveCurrentWeather = (weather: IWeatherResponse) => {
-    setCurrentWeather(weather);
-  };
-
-  const saveForecast = (forecast: IForecastResponse) => {
-    setForecast(forecast);
-  };
 
   return (
     <AppContext.Provider
       value={{
         currentCity,
-        saveCurrentCity,
+        setCurrentCity,
         currentWeather,
-        saveCurrentWeather,
+        setCurrentWeather,
         forecast,
-        saveForecast,
+        setForecast,
         fetchingWeather,
         setFetchingWeather,
       }}

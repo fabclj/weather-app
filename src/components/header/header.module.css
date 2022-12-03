@@ -9,8 +9,13 @@
 	color: #2f5d8a;
 }
 
-@media screen and (max-height: 1100px) {
+@media screen and (max-height: 1024px) {
+	.wrapper {
+		height: 6rem;
+	}
+
 	.title.withResults {
 		color: white;
+		height: initial;
 	}
 }

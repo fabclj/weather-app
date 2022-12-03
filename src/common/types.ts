@@ -1,4 +1,10 @@
-import { ReactNode } from 'react';
+import { ReactNode, Ref } from 'react';
+import {
+  SelectInstance,
+  SingleValue,
+  ActionMeta,
+  GroupBase,
+} from 'react-select';
 
 export interface IWeatherResponse {
   base: string;
@@ -75,13 +81,13 @@ export interface IProviderProps {
 }
 
 export interface AppContextType {
-  currentCity: any;
-  currentWeather: any;
-  forecast: any;
+  currentCity: ICity | null;
+  currentWeather: IWeatherResponse | null;
+  forecast: IForecastResponse[] | null;
   fetchingWeather: boolean;
-  saveForecast: (data: any) => void;
-  saveCurrentWeather: (data: any) => void;
-  saveCurrentCity: (data: any) => void;
+  setForecast: (data: IForecastResponse[] | null) => void;
+  setCurrentWeather: (data: IWeatherResponse | null) => void;
+  setCurrentCity: (data: ICity | null) => void;
   setFetchingWeather: (data: boolean) => void;
 }
 
@@ -110,4 +116,12 @@ export interface ISelect {
   data: ICity;
   value: number;
   label: string;
+}
+
+export interface SearchInputProps {
+  refSel: any; // Ref<SelectInstance<ISelect, false, GroupBase<ISelect>>> | null;
+  handleCitySelect: (
+    newValue: SingleValue<ISelect>,
+    actionMeta: ActionMeta<ISelect>
+  ) => void;
 }

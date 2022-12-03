@@ -1,27 +1,25 @@
 import { FC, useContext, useRef } from 'react';
-import AsyncSelect from 'react-select/async';
-import { SelectInstance } from 'react-select';
-import debounce from 'debounce-promise';
-import styles from './search.module.css';
+import { SingleValue, SelectInstance } from 'react-select';
+import SearchInput from './SearchInput';
 import { ReactComponent as LocationIcon } from '../../common/assets/icons/location-icon.svg';
 import { ReactComponent as SearchIcon } from '../../common/assets/icons/search-icon.svg';
 import { AppContext } from '../../common/appContext';
-import { AppContextType, ICity, ISelect } from '../../common/types';
-import { geo_api, weather_api } from '../../common/api';
+import { AppContextType, ISelect } from '../../common/types';
+import { weather_api } from '../../common/api';
+import styles from './search.module.css';
 
 const Search: FC = () => {
-  const refSel = useRef<SelectInstance>(null);
+  const refSel = useRef<SelectInstance | null>(null);
   const {
-    saveCurrentCity,
-    saveCurrentWeather,
-    saveForecast,
+    setCurrentCity,
+    setCurrentWeather,
+    setForecast,
     setFetchingWeather,
   } = useContext(AppContext) as AppContextType;
 
-  const handleCitySelect = (searchData: any): void => {
-    console.log(searchData);
+  const handleCitySelect = (searchData: SingleValue<ISelect>) => {
     if (searchData) {
-      saveCurrentCity(searchData.data);
+      setCurrentCity(searchData.data);
       fetchWeather(searchData.data.latitude, searchData.data.longitude);
     }
   };
@@ -31,12 +29,15 @@ const Search: FC = () => {
       setFetchingWeather(true);
       navigator.geolocation.getCurrentPosition(
         (position: GeolocationPosition) => {
-          saveCurrentCity(null);
+          setCurrentCity(null);
           refSel?.current?.clearValue();
           return fetchWeather(
             position.coords.latitude,
             position.coords.longitude
           );
+        },
+        (error: GeolocationPositionError) => {
+          setFetchingWeather(false);
         }
       );
     } else {
@@ -52,11 +53,10 @@ const Search: FC = () => {
         params: {
           lat: latitude,
           lon: longitude,
-          units: 'metric',
         },
       })
       .then(function (response) {
-        saveCurrentWeather(response.data);
+        setCurrentWeather(response.data);
       });
 
     await weather_api
@@ -64,92 +64,18 @@ const Search: FC = () => {
         params: {
           lat: latitude,
           lon: longitude,
-          units: 'metric',
         },
       })
       .then(function (response) {
-        saveForecast(response.data);
+        setForecast(response.data.list);
       });
     setFetchingWeather(false);
   };
 
-  const fetchCities = debounce(
-    (inputValue: string) =>
-      new Promise<ISelect[]>((resolve) => {
-        if (inputValue === '') {
-          resolve([]);
-        } else {
-          geo_api
-            .get('/cities', {
-              params: {
-                minPopulation: 100000,
-                sort: '-population',
-                namePrefix: inputValue,
-                limit: '10',
-                types: 'CITY',
-              },
-            })
-            .then(function (response) {
-              resolve(mapCity(response.data.data));
-            });
-        }
-      }),
-    1000
-  );
-
-  const mapCity = (data: ICity[]): ISelect[] => {
-    const cities = data.map((city: ICity) => {
-      return {
-        value: city.id,
-        label: `${city.name}, ${city.country}`,
-        data: city,
-      };
-    });
-    return cities;
-  };
-
   return (
     <div className={styles.wrapper}>
-      <AsyncSelect
-        ref={refSel}
-        defaultOptions
-        isClearable
-        loadOptions={fetchCities}
-        onChange={handleCitySelect}
-        placeholder="Search City..."
-        noOptionsMessage={(string) => {
-          return 'Please type the a valid city name';
-        }}
-        styles={{
-          control: (baseStyles, state) => ({
-            ...baseStyles,
-            borderRadius: '26px',
-            height: '3.25rem',
-            boxShadow: '0px 1px 3px rgba(0, 0, 0, 0.1)',
-            border: 'none',
-            padding: '0px 30px 0px 46px',
-          }),
-          placeholder: (baseStyles, state) => ({
-            ...baseStyles,
-            color: '#7b98b2',
-          }),
-          input: (baseStyles, state) => ({
-            ...baseStyles,
-            color: '#396bae',
-          }),
-          singleValue: (baseStyles, state) => ({
-            ...baseStyles,
-            color: '#396bae',
-          }),
-          menu: (baseStyles, state) => ({
-            ...baseStyles,
-            color: '#396bae',
-          }),
-          dropdownIndicator: (baseStyles, state) => ({
-            visibility: 'hidden',
-          }),
-        }}
-      />
+      <SearchInput refSel={refSel} handleCitySelect={handleCitySelect} />
+
       <div className={styles.localize} onClick={handleGeoLocation}>
         <LocationIcon />
       </div>
