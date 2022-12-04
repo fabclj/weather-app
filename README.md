@@ -17,3 +17,5 @@ Launches the test runner in the interactive watch mode.
 ## Live Demo
 
 [https://another-weather-react-app.herokuapp.com/](https://another-weather-react-app.herokuapp.com/)
+
+<img src="public/preview.jpeg" alt="App Preview"/>
