@@ -1,21 +1,21 @@
 .wrapper {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	height: 8rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 8rem;
 }
 
 .title {
-	color: #2f5d8a;
+  color: #2f5d8a;
 }
 
 @media screen and (max-height: 1024px) {
-	.wrapper {
-		height: 6rem;
-	}
+  .wrapper {
+    height: 6rem;
+  }
 
-	.title.withResults {
-		color: white;
-		height: initial;
-	}
+  .title.withResults {
+    color: white;
+    height: initial;
+  }
 }
