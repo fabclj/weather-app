@@ -1,4 +1,4 @@
-import { FC, useContext, useRef } from 'react';
+import { FC, useRef } from 'react';
 import { SingleValue, SelectInstance } from 'react-select';
 import SearchInput from './SearchInput';
 import { ReactComponent as LocationIcon } from '../../common/assets/icons/location-icon.svg';

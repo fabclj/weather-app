@@ -1,4 +1,4 @@
-import { FC, useContext } from 'react';
+import { FC } from 'react';
 import { useAppContext } from '../../common/appContext';
 import WeatherIcon from '../WeatherIcon';
 import { format, isToday } from 'date-fns';

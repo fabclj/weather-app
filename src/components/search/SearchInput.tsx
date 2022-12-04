@@ -5,7 +5,7 @@ import { ICity, ISelect, SearchInputProps } from '../../common/types';
 import { geo_api } from '../../common/api';
 
 const SearchInput: FC<SearchInputProps> = (props) => {
-	const { refSel, handleCitySelect } = props;
+	const { refSel, handleCitySelect, defaultOptions } = props;
 
 	const fetchCities = debounce(
 		(inputValue: string) =>
@@ -41,11 +41,12 @@ const SearchInput: FC<SearchInputProps> = (props) => {
 	return (
 		<AsyncSelect
 			ref={refSel}
-			defaultOptions
 			isClearable
+			defaultOptions={defaultOptions}
 			loadOptions={fetchCities}
 			onChange={handleCitySelect}
 			placeholder="Search City..."
+			inputId="city-search"
 			noOptionsMessage={(string) => {
 				return 'Please type a valid city name';
 			}}

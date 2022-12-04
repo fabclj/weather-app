@@ -119,9 +119,10 @@ export interface ISelect {
 }
 
 export interface SearchInputProps {
-  refSel: any; // Ref<SelectInstance<ISelect, false, GroupBase<ISelect>>> | null;
+  refSel?: any; // Ref<SelectInstance<ISelect, false, GroupBase<ISelect>>> | null;
   handleCitySelect: (
     newValue: SingleValue<ISelect>,
     actionMeta: ActionMeta<ISelect>
   ) => void;
+  defaultOptions?: any;
 }

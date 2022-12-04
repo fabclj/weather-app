@@ -1,4 +1,4 @@
-import React, { FC, useContext } from 'react';
+import React, { FC } from 'react';
 import { useAppContext } from '../../common/appContext';
 import * as Icons from '../../common/assets/icons/details';
 import WeatherIcon from '../WeatherIcon';
