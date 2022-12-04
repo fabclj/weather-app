@@ -1,4 +1,4 @@
-import { FC, useContext } from 'react';
+import { FC } from 'react';
 import { useAppContext } from '../../common/appContext';
 import styles from './loader.module.css';
 

@@ -7,7 +7,7 @@ import {
   ICity,
 } from './types';
 
-const AppContext = createContext<AppContextType | null>(null);
+export const AppContext = createContext<AppContextType | null>(null);
 
 const AppProvider: FC<IProviderProps> = ({ children }) => {
   const [forecast, setForecast] = useState<IForecastResponse[] | null>(null);
