@@ -1,10 +1,9 @@
 import { FC, useContext } from 'react';
-import { AppContext } from '../../common/appContext';
-import { AppContextType } from '../../common/types';
+import { useAppContext } from '../../common/appContext';
 import styles from './loader.module.css';
 
 export const Loader: FC = () => {
-  const { currentWeather } = useContext(AppContext) as AppContextType;
+  const { currentWeather } = useAppContext();
 
   const loaderStyle = `${styles.loader} ${
     currentWeather ? styles.withResults : null

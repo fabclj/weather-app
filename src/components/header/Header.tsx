@@ -1,13 +1,10 @@
 import React, { FC, useContext } from 'react';
-import { AppContext } from '../../common/appContext';
-import { AppContextType } from '../../common/types';
+import { useAppContext } from '../../common/appContext';
 import Loader from '../loader/Loader';
 import styles from './header.module.css';
 
 const Header: FC = () => {
-  const { currentWeather, fetchingWeather } = useContext(
-    AppContext
-  ) as AppContextType;
+  const { currentWeather, fetchingWeather } = useAppContext();
 
   const titleStyle = `${styles.title} ${
     currentWeather ? styles.withResults : null

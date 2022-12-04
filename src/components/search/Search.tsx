@@ -3,8 +3,8 @@ import { SingleValue, SelectInstance } from 'react-select';
 import SearchInput from './SearchInput';
 import { ReactComponent as LocationIcon } from '../../common/assets/icons/location-icon.svg';
 import { ReactComponent as SearchIcon } from '../../common/assets/icons/search-icon.svg';
-import { AppContext } from '../../common/appContext';
-import { AppContextType, ISelect } from '../../common/types';
+import { useAppContext } from '../../common/appContext';
+import { ISelect } from '../../common/types';
 import { weather_api } from '../../common/api';
 import styles from './search.module.css';
 
@@ -15,7 +15,7 @@ const Search: FC = () => {
     setCurrentWeather,
     setForecast,
     setFetchingWeather,
-  } = useContext(AppContext) as AppContextType;
+  } = useAppContext();
 
   const handleCitySelect = (searchData: SingleValue<ISelect>) => {
     if (searchData) {

@@ -1,6 +1,5 @@
 import { FC, useContext } from 'react';
-import { AppContext } from '../../common/appContext';
-import { AppContextType } from '../../common/types';
+import { useAppContext } from '../../common/appContext';
 import WeatherIcon from '../WeatherIcon';
 import { format, isToday } from 'date-fns';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -8,7 +7,7 @@ import 'swiper/css';
 import styles from './forecast.module.css';
 
 const Forecast: FC = () => {
-  const { forecast } = useContext(AppContext) as AppContextType;
+  const { forecast } = useAppContext();
 
   if (!forecast) return null;
 

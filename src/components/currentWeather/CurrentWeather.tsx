@@ -1,14 +1,11 @@
 import React, { FC, useContext } from 'react';
-import { AppContext } from '../../common/appContext';
+import { useAppContext } from '../../common/appContext';
 import * as Icons from '../../common/assets/icons/details';
-import { AppContextType } from '../../common/types';
 import WeatherIcon from '../WeatherIcon';
 import styles from './currentWeather.module.css';
 
 const CurrentWeather: FC = () => {
-  const { currentWeather, currentCity } = useContext(
-    AppContext
-  ) as AppContextType;
+  const { currentWeather, currentCity } = useAppContext();
 
   if (!currentWeather) return null;
 

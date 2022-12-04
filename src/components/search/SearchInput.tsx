@@ -24,7 +24,7 @@ const SearchInput: FC<SearchInputProps> = (props) => {
 						});
 				}
 			}),
-		500
+		1000
 	);
 
 	const mapCity = (data: ICity[]): ISelect[] => {
@@ -47,7 +47,7 @@ const SearchInput: FC<SearchInputProps> = (props) => {
 			onChange={handleCitySelect}
 			placeholder="Search City..."
 			noOptionsMessage={(string) => {
-				return 'Please type the a valid city name';
+				return 'Please type a valid city name';
 			}}
 			styles={{
 				control: (baseStyles, state) => ({
