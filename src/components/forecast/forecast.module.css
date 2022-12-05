@@ -1,0 +1,72 @@
+.wrapper {
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  padding: 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.mainTitle {
+  font-weight: 500;
+  font-size: 1.4rem;
+  color: #727e8e;
+}
+
+.slides {
+  position: relative;
+  margin: 30px -30px 20px -30px;
+  cursor: grab;
+}
+
+.slides:after {
+  content: ' ';
+  width: 100px;
+  height: 100%;
+  background: linear-gradient(90deg, hsla(0, 0%, 100%, 0) 0, #fff 80%);
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 11;
+}
+
+.slide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.slide .date {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #4581c5;
+  text-align: center;
+}
+
+.slide svg {
+  width: 5rem;
+  height: 5rem;
+  margin: 0.3rem 0;
+}
+
+.slide p {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #4a6fa1;
+}
+
+.slide span {
+  font-size: 1.125rem;
+  color: #4a6fa1;
+  width: 5rem;
+  text-align: center;
+}
+
+@media (max-width: 800px) {
+  .slides:after {
+    width: 70px;
+  }
+}
