@@ -18,4 +18,4 @@ Launches the test runner in the interactive watch mode.
 
 [https://another-weather-react-app.herokuapp.com/](https://another-weather-react-app.herokuapp.com/)
 
-<img src="public/preview.jpeg" alt="App Preview"/>
+<img src="preview.jpeg" alt="App Preview"/>

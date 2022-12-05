@@ -17,7 +17,7 @@ const CurrentWeather: FC = () => {
       <div className={styles.cityBox}>
         <div className={styles.info}>
           <h2>{currentCity?.name || currentWeather.name}</h2>
-          <div className={styles.temp}>
+          <div className={styles.temp} data-testid="WeatherIcon">
             <WeatherIcon
               big
               code={currentWeather.weather[0].id}

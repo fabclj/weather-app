@@ -23,7 +23,11 @@ const Forecast: FC = () => {
             const day = isToday(date) ? 'Today' : format(date, 'EEEE');
             const time = format(date, 'p');
             return (
-              <SwiperSlide style={{ width: '135px' }} key={i}>
+              <SwiperSlide
+                style={{ width: '135px' }}
+                key={i}
+                data-testid="SlideItem"
+              >
                 <div className={styles.slide}>
                   <div className={styles.date}>
                     {day}

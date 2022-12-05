@@ -1,16 +1,17 @@
 import fetchMock from 'jest-fetch-mock';
-import { render, fireEvent, cleanup, waitFor } from '@testing-library/react';
+import {
+  render,
+  fireEvent,
+  cleanup,
+  waitFor,
+  waitForElementToBeRemoved,
+} from '@testing-library/react';
 import { geo_api, weather_api } from '../common/api';
 import SearchInput from '../components/search/SearchInput';
 import CurrentWeather from '../components/currentWeather/CurrentWeather';
 import Forecast from '../components/forecast/Forecast';
 import { AppContext } from '../common/appContext';
-import {
-  weatherMock,
-  citiesMock,
-  forecastMock,
-  berlinMock,
-} from '../common/mockData';
+import { weatherMock, citiesMock, forecastMock, berlinMock } from './mockData';
 
 fetchMock.enableMocks();
 
@@ -23,7 +24,7 @@ describe('Test search API and Input Component behaviour', () => {
 
   afterEach(cleanup);
 
-  it('returns correct cities data from Geo Search API', async () => {
+  it('should returns correct cities data from Geo Search API', async () => {
     fetch.mockResponseOnce(JSON.stringify(citiesMock));
     const geoApiResponse = await geo_api
       .get('/cities', {
@@ -105,31 +106,37 @@ describe('Test search API and Input Component behaviour', () => {
   });
 });
 
-test('should render CurrentWeather Widget', () => {
-  const contextValueMocked = {
-    currentWeather: weatherMock,
-    currentCity: berlinMock.data,
-  };
+describe('Test main Widget Components', () => {
+  afterEach(cleanup);
 
-  const { getByText } = render(
-    <AppContext.Provider value={contextValueMocked}>
-      <CurrentWeather />
-    </AppContext.Provider>
-  );
+  it('should render CurrentWeather Widget', () => {
+    const contextValueMocked = {
+      currentWeather: weatherMock,
+      currentCity: berlinMock.data,
+    };
 
-  expect(getByText('Current Weather')).toBeInTheDocument();
-});
+    const { getByText, getByTestId } = render(
+      <AppContext.Provider value={contextValueMocked}>
+        <CurrentWeather />
+      </AppContext.Provider>
+    );
 
-test('should render Forecast Widget', () => {
-  const contextValueMocked = {
-    forecast: forecastMock,
-  };
+    expect(getByText('Current Weather')).toBeInTheDocument();
+    expect(getByTestId('WeatherIcon')).toBeInTheDocument();
+  });
 
-  const { getByText } = render(
-    <AppContext.Provider value={contextValueMocked}>
-      <Forecast />
-    </AppContext.Provider>
-  );
+  it('should render Forecast Widget', () => {
+    const contextValueMocked = {
+      forecast: forecastMock,
+    };
 
-  expect(getByText('Forecast')).toBeInTheDocument();
+    const { getByText, getAllByTestId } = render(
+      <AppContext.Provider value={contextValueMocked}>
+        <Forecast />
+      </AppContext.Provider>
+    );
+
+    expect(getByText('Forecast')).toBeInTheDocument();
+    expect(getAllByTestId('SlideItem').length).toEqual(5);
+  });
 });
