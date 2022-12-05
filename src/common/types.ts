@@ -124,5 +124,5 @@ export interface SearchInputProps {
     newValue: SingleValue<ISelect>,
     actionMeta: ActionMeta<ISelect>
   ) => void;
-  defaultOptions?: any;
+  defaultOptions?: ISelect[];
 }
