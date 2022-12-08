@@ -71,7 +71,7 @@ const SearchInput: FC<SearchInputProps> = (props) => {
     searchData: SingleValue<ISelect>,
     actionMeta: ActionMeta<ISelect>
   ) => {
-    console.log(actionMeta);
+    // console.log(actionMeta);
     if (searchData) {
       syncHistory(searchData);
       handleCitySelect(searchData, actionMeta);
