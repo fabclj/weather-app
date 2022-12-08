@@ -14,6 +14,6 @@ You will also see any lint errors in the console.
 
 Launches the test runner in the interactive watch mode.
 
-## Live Demo
+## Preview
 
-[https://another-weather-react-app.herokuapp.com/](https://another-weather-react-app.herokuapp.com/)
+<img src="preview.jpeg" alt="App Preview"/>
