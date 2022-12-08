@@ -1,10 +1,16 @@
 import { FC } from 'react';
 import AsyncSelect from 'react-select/async';
+import { SingleValue, ActionMeta } from 'react-select';
 import debounce from 'debounce-promise';
+import useLocalStorage from '../../hooks/useLocalStorage';
 import { ICity, ISelect, SearchInputProps } from '../../common/types';
 import { geo_api } from '../../common/api';
 
 const SearchInput: FC<SearchInputProps> = (props) => {
+  const [searchHistory, setSearchHistory] = useLocalStorage<
+    ISelect[] | boolean
+  >('searchHistory', false);
+
   const { refSel, handleCitySelect, defaultOptions } = props;
 
   const fetchCities = debounce(
@@ -38,13 +44,47 @@ const SearchInput: FC<SearchInputProps> = (props) => {
     return cities;
   };
 
+  const syncHistory = (searchData: ISelect) => {
+    const newCity = {
+      value: searchData.data.id,
+      label: `${searchData.data.name}, ${searchData.data.country}`,
+      data: searchData.data,
+    };
+
+    if (typeof searchHistory === 'boolean') {
+      return setSearchHistory([newCity]);
+    }
+
+    if (searchHistory.some((e) => e.value === searchData.value)) {
+      return;
+    }
+
+    let newHistory = searchHistory;
+    if (newHistory.length > 4) {
+      newHistory.pop();
+    }
+
+    setSearchHistory([newCity, ...newHistory]);
+  };
+
+  const handleOnChange = (
+    searchData: SingleValue<ISelect>,
+    actionMeta: ActionMeta<ISelect>
+  ) => {
+    console.log(actionMeta);
+    if (searchData) {
+      syncHistory(searchData);
+      handleCitySelect(searchData, actionMeta);
+    }
+  };
+
   return (
     <AsyncSelect
       ref={refSel}
       isClearable
-      defaultOptions={defaultOptions}
+      defaultOptions={defaultOptions || searchHistory}
       loadOptions={fetchCities}
-      onChange={handleCitySelect}
+      onChange={handleOnChange}
       placeholder="Search City..."
       inputId="city-search"
       noOptionsMessage={(string) => {

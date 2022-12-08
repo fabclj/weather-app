@@ -1,5 +1,5 @@
 import { FC, useRef } from 'react';
-import { SingleValue, SelectInstance } from 'react-select';
+import { SingleValue, SelectInstance, ActionMeta } from 'react-select';
 import SearchInput from './SearchInput';
 import { ReactComponent as LocationIcon } from '../../common/assets/icons/location-icon.svg';
 import { ReactComponent as SearchIcon } from '../../common/assets/icons/search-icon.svg';
@@ -17,7 +17,10 @@ const Search: FC = () => {
     setFetchingWeather,
   } = useAppContext();
 
-  const handleCitySelect = (searchData: SingleValue<ISelect>) => {
+  const handleCitySelect = (
+    searchData: SingleValue<ISelect>,
+    actionMeta: ActionMeta<ISelect>
+  ) => {
     if (searchData) {
       setCurrentCity(searchData.data);
       fetchWeather(searchData.data.latitude, searchData.data.longitude);
