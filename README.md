@@ -14,6 +14,14 @@ You will also see any lint errors in the console.
 
 Launches the test runner in the interactive watch mode.
 
+### `npm run server`
+
+Launches the Apollo server.
+
+### `npm run compile`
+
+Launches the GraphQL codegen.
+
 ## Preview
 
 <img src="preview.jpeg" alt="App Preview"/>
