@@ -18,8 +18,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "prebuild": "node ./server",
     "build": "react-scripts build",
+    "postbuild": "node ./server",
     "test": "react-scripts test --verbose",
     "eject": "react-scripts eject",
     "server": "node ./server",
