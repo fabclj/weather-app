@@ -1,11 +1,12 @@
 import { FC, useRef } from 'react';
+import { useQuery } from '@apollo/client';
 import { SingleValue, SelectInstance, ActionMeta } from 'react-select';
 import SearchInput from './SearchInput';
 import { ReactComponent as LocationIcon } from '../../common/assets/icons/location-icon.svg';
 import { ReactComponent as SearchIcon } from '../../common/assets/icons/search-icon.svg';
 import { useAppContext } from '../../common/appContext';
+import { GET_CITY_WEATHER } from '../../common/gql';
 import { ISelect } from '../../common/types';
-import { weather_api } from '../../common/api';
 import styles from './search.module.css';
 
 const Search: FC = () => {
@@ -16,6 +17,14 @@ const Search: FC = () => {
     setForecast,
     setFetchingWeather,
   } = useAppContext();
+
+  const { refetch } = useQuery(GET_CITY_WEATHER, {
+    skip: true,
+    onCompleted: (data) => {
+      setCurrentWeather(data.weather);
+      setForecast(data.forecast.list);
+    },
+  });
 
   const handleCitySelect = (
     searchData: SingleValue<ISelect>,
@@ -51,27 +60,7 @@ const Search: FC = () => {
 
   const fetchWeather = async (latitude: number, longitude: number) => {
     setFetchingWeather(true);
-    await weather_api
-      .get('/weather', {
-        params: {
-          lat: latitude,
-          lon: longitude,
-        },
-      })
-      .then(function (response) {
-        setCurrentWeather(response.data);
-      });
-
-    await weather_api
-      .get('/forecast', {
-        params: {
-          lat: latitude,
-          lon: longitude,
-        },
-      })
-      .then(function (response) {
-        setForecast(response.data.list);
-      });
+    await refetch({ lat: latitude, lon: longitude });
     setFetchingWeather(false);
   };
 
