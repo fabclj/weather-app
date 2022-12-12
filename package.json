@@ -7,6 +7,7 @@
     "apollo-datasource-rest": "^0.9.4",
     "apollo-server": "^2.18.1",
     "axios": "^1.2.0",
+    "concurrently": "^7.6.0",
     "date-fns": "^2.29.3",
     "debounce-promise": "^3.1.2",
     "graphql": "^15.3.0",
@@ -18,11 +19,12 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "prebuild": "node ./server",
     "build": "react-scripts build",
     "test": "react-scripts test --verbose",
     "eject": "react-scripts eject",
     "server": "node ./server",
+    "start-serve": "concurrently \"npm run server\" \"npm start\"",
+    "build-serve": "concurrently \"npm run server\" \"npm run build\"",
     "compile": "graphql-codegen",
     "watch": "graphql-codegen -w"
   },
